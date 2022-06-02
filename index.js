@@ -26,9 +26,14 @@ class CoffeeShop {
 		this.orders = orders;
 
 		this.addOrder = function (item) {
-			if (this.menu.includes(item)) {
+			if(this.menu.filter(el => el.item === item).length > 0 ){
 				this.orders.push(item);
-			} else {
+				return "order added !!!";
+			}
+			
+			// if (this.menu.includes(item)) {
+			// 	this.orders.push(item);
+			 else {
 				return "This item is currently unavailable!";
 			}
 		}
@@ -37,7 +42,7 @@ class CoffeeShop {
 			if (this.orders.length === 0) {
 				return "All orders have been fulfilled!";
 			} else {
-				return `The ${this.orders[0]} is ready!`;
+				return `The ${this.orders.shift()} is ready!`;
 			}
 		}
 
@@ -54,16 +59,18 @@ class CoffeeShop {
 		}
 
 		this.cheapestItem = function () {
-			let cheapest = this.menu[0].name;
+			let cheapest = this.menu[0].price;
 			for (let i = 0; i < this.menu.length; i++) {
-				if (this.menu[i].price < this.menu[cheapest].price) {
-					cheapest = this.menu[i].name;
+				console.log(this.menu[i].price);
+				if (this.menu[i].price < cheapest){
+					cheapest = this.menu[i].item;
 				}
 			}
-			return cheapest;
+			return cheapest +" is the cheapest !!";
 		}
 
 		this.drinksOnly = function () {
+			// filter().map()
 			let drinks = [];
 			for (let i = 0; i < this.menu.length; i++) {
 				if (this.menu[i].type === "drink") {
@@ -86,3 +93,13 @@ class CoffeeShop {
 	}
 
 }
+
+const coffeeShop = new CoffeeShop('Starbucks',  [{item:"Mocka", type:"drink" ,price:10},{item:"cheeseCake",type:"food" ,price:6} ],[]);
+console.log(coffeeShop.addOrder('Tea'));
+console.log(coffeeShop.addOrder('Mocka'));
+console.log(coffeeShop.addOrder('cheeseCake'));
+
+console.log(coffeeShop.fulfillOrder());
+console.log(coffeeShop.fulfillOrder());
+console.log(coffeeShop.fulfillOrder());
+console.log(coffeeShop.cheapestItem());
